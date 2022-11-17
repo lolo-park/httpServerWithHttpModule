@@ -31,6 +31,37 @@ const posts = [
   },
 ];
 
+const data = [
+  {
+    "userID" : 1, 
+    "userName" : "Rebekah Johnson",
+    "postingID" : 1,
+    "postingTitle" : "간단한 HTTP API 개발 시작!",
+    "postingContetn" : "Node.js에 내장되어 있는 http 모듈을 사용해서 HTTP server를 구현."
+  },
+  {
+    "userID" : 2, 
+    "userName" : "Fabian Predovic",
+    "postingID" : 2,
+    "postingTitle" : "HTTP의 특성",
+    "postingContetn" : "Request/Response와 Stateless!"
+  },
+  {
+    "userID" : 3, 
+    "userName" : "new user 1",
+    "postingID" : 3,
+    "postingTitle" : "내용 1",
+    "postingContetn" : "sampleContent3"
+  },
+  {
+    "userID" : 4, 
+    "userName" : "new user 2",
+    "postingID" : 4,
+    "postingTitle" : "내용 2",
+    "postingContetn" : "sampleContent4"
+  },
+]
+
 const httpRequestListener = function (request, response) {
   const { url, method } = request;
 
@@ -62,6 +93,7 @@ const httpRequestListener = function (request, response) {
             email: user.email,
             password: user.password
           });
+
           response.writeHead(200, { "Content-Type": "application/json" });
           response.end(JSON.stringify({ message : "OK "}));
       })
@@ -81,8 +113,14 @@ const httpRequestListener = function (request, response) {
           content: post.content,
           userId: post.userID
         });
+        response.writeHead(200, { "Content-Type": "application/json" });
         response.end(JSON.stringify({ message : "postCreated"}));
       })
+    } else if ("method === GET"){
+      if ("url === /articles") {
+        response.writeHead(200, { "Content-Type": "application/json" });
+        response.end(JSON.stringify({ message : "postCreated"}));
+      }
     }
   } 
 };
