@@ -40,6 +40,7 @@ const httpRequestListener = function (request, response) {
       //요청이 보내지는 target 이 /ping 이라는 endpoint 라면
       response.writeHead(200, { "Content-Type": "application/json" });
       response.end(JSON.stringify({ message: "pong" }));
+
     } else if (method === "POST") {
       //만약 POST method 이고
       if (url === "/users") {
@@ -59,14 +60,31 @@ const httpRequestListener = function (request, response) {
             id: user.id,
             name: user.name,
             email: user.email,
-            password: user.password,
+            password: user.password
           });
+          response.writeHead(200, { "Content-Type": "application/json" });
+          response.end(JSON.stringify({ message : "OK "}));
+      })
+    } else if (url === "/posts") {
 
-          response.end(JSON.stringify({ message : "Ok" });
+      let body = "";
+      request.on("data", (data) => {
+        body += data;
+      });
+
+      request.on("end", () => {
+        const posts = JSON.parse(body);
+
+        posts.push({
+          id: post.id,
+          title: post.title,
+          content: post.content,
+          userId: post.userID
         });
-      }
+        response.end(JSON.stringify({ message : "postCreated"}));
+      })
     }
-  }
+  } 
 };
 
 server.on("request", httpRequestListener);
